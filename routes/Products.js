@@ -1,4 +1,5 @@
-const { Product } = require("../models/product");
+const { Product } = require("../Models/product");
+const {User} = require("../Models/User"); 
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -48,6 +49,16 @@ router.get(`/:id`, async (req, res) => {
     res.send(product);
 });
 
+router.get(`/store/:id`, async (req, res) => {
+    const store = await User.findById(req.params.id);
+
+    if (!store) {
+        res.status(500).json({ success: false });
+    }
+    const products = await Product.findById({Admin.name:store.name}); 
+    res.send(product);
+});
+
 router.post("/", uploadOptions.single("image"), async (req, res) => {
     //check if the category exists
     const category = req.body.category;
@@ -80,7 +91,7 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
     }
     res.send(product);
 });
-//update the product
+
 router.put("/:id", uploadOptions.single("image"), async (req, res) => {
     //check the id
     if (!mongoose.isValidObjectId(req.params.id)) {
