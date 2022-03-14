@@ -9,7 +9,7 @@ const OrderSchema = mongoose.Schema({
     phone: { type: String, required: true },
     status: { type: String, required: true, default: "Pending" },
     totalPrice: { type: Number },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "RegularUser" },
     dateOrdered: { type: Date, default: Date.now },
 });
 
