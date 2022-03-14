@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../models/User");
+const { User } = require("../Models/User");
 
 router.get("/", async (req, res) => {
     const UserList = await User.find().select("-password");
@@ -56,13 +56,15 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post("/register", async (req, res) => {        
+router.post("/register", async (req, res) => {
     //check if the name is unique over all the names in the DataBase
     let User = new User({
         name: req.body.name,
         email: req.body.email,
-        password:req.body.password
+        password: req.body.password,
         phone: req.body.phone,
+        receiverName: req.body.name,
+        receiverPhone: req.body.phone,
         isAdmin: req.body.isAdmin,
     });
     User = await User.save();

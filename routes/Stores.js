@@ -1,4 +1,4 @@
-const { User } = require("../models/user");
+const { User } = require("../Models/User");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -23,6 +23,5 @@ router.get("/:id", async (req, res) => {
     }
     res.send(stores);
 });
-
 
 module.exports = router;

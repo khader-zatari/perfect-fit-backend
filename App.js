@@ -4,7 +4,6 @@ const app = express();
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const authJwt = require("./helper/jwt");
 const errorHandler = require("./helper/error-handler");
 const api = process.env.API_URL;
 
@@ -12,24 +11,22 @@ const api = process.env.API_URL;
 //replace bodyparser with it #####delete#####
 app.use(express.json()); // analyze the req and the res as JSON
 app.use(morgan("tiny")); //used to console log the http request in a good format
-app.use(authJwt()); // check if the user has the right token to access out api's
+
 app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 app.use(errorHandler); //check if there are any errors...
 
 app.use(cors());
 app.options("*", cors());
 
-const usersRoutes = require("./routes/users");
-const productsRoutes = require("./routes/products");
-const categoriesRoutes = require("./routes/categories");
-const ordersRoutes = require("./routes/orders");
-const storesRoutes = require("./routes/stores");
+const usersRoutes = require("./routes/User");
+const productsRoutes = require("./routes/Products");
+const storeRoutes = require("./routes/Stores");
+const ordersRoutes = require("./routes/Orders");
 
 app.use(`${api}/users`, usersRoutes); // when i want the begining of that path just rout me to the user router.
 app.use(`${api}/products`, productsRoutes);
-app.use(`${api}/categories`, categoriesRoutes);
 app.use(`${api}/orders`, ordersRoutes);
-app.use(`${api}/stores`, storesRoutes);
+app.use(`${api}/stores`, storeRoutes);
 
 //connect to the database
 mongoose
@@ -43,14 +40,14 @@ mongoose
 //listen on port 3000
 
 //development
-// app.listen(3000, () => {
-//     console.log(api);
-//     console.log("server is running on http://localhost:3000");
-// });
+app.listen(3000, () => {
+    console.log(api);
+    console.log("server is running on http://localhost:3000");
+});
 
 //production
 
-var server = app.listen(process.env.PORT || 3000, function () {
-    var port = server.address().port;
-    console.log("Expres is working on port " + port);
-});
+// var server = app.listen(process.env.PORT || 3000, function () {
+//     var port = server.address().port;
+//     console.log("Expres is working on port " + port);
+// });

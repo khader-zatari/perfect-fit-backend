@@ -1,5 +1,5 @@
-const { Product } = require("../Models/product");
-const {User} = require("../Models/User"); 
+const { Product } = require("../Models/Product");
+const { User } = require("../Models/User");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -49,15 +49,15 @@ router.get(`/:id`, async (req, res) => {
     res.send(product);
 });
 
-router.get(`/store/:id`, async (req, res) => {
-    const store = await User.findById(req.params.id);
+// router.get(`/store/:id`, async (req, res) => {
+//     const store = await User.findById(req.params.id);
 
-    if (!store) {
-        res.status(500).json({ success: false });
-    }
-    const products = await Product.findById({Admin.name:store.name}); 
-    res.send(product);
-});
+//     if (!store) {
+//         res.status(500).json({ success: false });
+//     }
+//     const products = await Product.findById();
+//     res.send(product);
+// });
 
 router.post("/", uploadOptions.single("image"), async (req, res) => {
     //check if the category exists
@@ -81,9 +81,8 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
         isFeatured: req.body.isFeatured,
         size: req.body.size,
         color: req.body.color,
-        personType = req.body.personType,
-        Admin:req.body.admin, 
-
+        personType: req.body.personType,
+        Admin: req.body.admin,
     });
     product = await product.save();
     if (!product) {
@@ -116,18 +115,18 @@ router.put("/:id", uploadOptions.single("image"), async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         {
-        name: req.body.name,
-        description: req.body.description,
-        image: imagepath, // "http://localhost:3000/public/upload/image-2323232" ///////uploaded file url
-        brand: req.body.brand,
-        price: req.body.price,
-        category: req.body.category,
-        countInStock: req.body.countInStock,
-        isFeatured: req.body.isFeatured,
-        size: req.body.size,
-        color: req.body.color,
-        personType = req.body.personType,
-        Admin:req.body.admin, 
+            name: req.body.name,
+            description: req.body.description,
+            image: imagepath, // "http://localhost:3000/public/upload/image-2323232" ///////uploaded file url
+            brand: req.body.brand,
+            price: req.body.price,
+            category: req.body.category,
+            countInStock: req.body.countInStock,
+            isFeatured: req.body.isFeatured,
+            size: req.body.size,
+            color: req.body.color,
+            personType: req.body.personType,
+            Admin: req.body.admin,
         },
         { new: true }
     );
