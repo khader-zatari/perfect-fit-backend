@@ -18,7 +18,7 @@ app.use(errorHandler); //check if there are any errors...
 app.use(cors());
 app.options("*", cors());
 
-const usersRoutes = require("./routes/User");
+const usersRoutes = require("./routes/Users");
 const productsRoutes = require("./routes/Products");
 const storeRoutes = require("./routes/Stores");
 const ordersRoutes = require("./routes/Orders");

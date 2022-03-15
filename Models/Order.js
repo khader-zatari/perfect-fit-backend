@@ -1,7 +1,7 @@
 //all order schema
 const mongoose = require("mongoose");
 
-const OrderSchema = mongoose.Schema({
+const orderSchema = mongoose.Schema({
     orderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "OrderItem", required: true }],
     shippingAddress1: { type: String, required: true },
     city: { type: String, required: true },
@@ -13,4 +13,4 @@ const OrderSchema = mongoose.Schema({
     dateOrdered: { type: Date, default: Date.now },
 });
 
-exports.Order = mongoose.model("Order", OrderSchema);
+exports.Order = mongoose.model("Order", orderSchema);

@@ -15,4 +15,4 @@ const productSchema = mongoose.Schema({
     Admin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     dateCreated: { type: Date, default: Date.now },
 });
-const Product = mongoose.model("Product", productSchema);
+ exports.Product = mongoose.model("Product", productSchema);

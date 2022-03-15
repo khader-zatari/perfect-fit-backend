@@ -4,7 +4,6 @@ const { User } = require("../Models/User");
 
 router.get("/", async (req, res) => {
     const UserList = await User.find().select("-password");
-
     if (!UserList) {
         res.status(500).json({ success: false });
     }
@@ -12,11 +11,11 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    const User = await User.findById(req.params.id).select("-password");
-    if (!User) {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
         res.status(500).json({ message: "The User with the given ID was not found" });
     }
-    res.send(User);
+    res.send(user);
 });
 
 router.put("/:id", async (req, res) => {
@@ -28,7 +27,7 @@ router.put("/:id", async (req, res) => {
     } else {
         newPassword = UserExist.passwordHash;
     }
-    const User = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
@@ -38,19 +37,19 @@ router.put("/:id", async (req, res) => {
         },
         { new: true }
     );
-    if (!User) {
+    if (!user) {
         res.status(400).send("the User cannot be updated!");
     }
-    res.send(User);
+    res.send(user);
 });
 
 router.post("/login", async (req, res) => {
-    const User = await User.findOne({ email: req.body.email });
-    if (!User) {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
         res.status(400).send("the User is not found");
     }
-    if (req.body.password == User.password) {
-        res.status(200).send({ User: User.email });
+    if (req.body.password == user.password) {
+        res.status(200).send({ user: user.email });
     } else {
         res.status(400).send("password is wrong!");
     }
@@ -58,7 +57,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     //check if the name is unique over all the names in the DataBase
-    let User = new User({
+    let user = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
@@ -67,15 +66,15 @@ router.post("/register", async (req, res) => {
         receiverPhone: req.body.phone,
         isAdmin: req.body.isAdmin,
     });
-    User = await User.save();
+    user = await user.save();
 
-    if (!User) return res.status(400).send("can't create the User");
-    res.send(User);
+    if (!user) return res.status(400).send("can't create the User");
+    res.send(user);
 });
 
 router.delete("/:id", async (req, res) => {
-    const User = await User.findByIdAndRemove(req.params.id);
-    if (!User) {
+    const user = await User.findByIdAndRemove(req.params.id);
+    if (!user) {
         return res.status(404).json({ success: false, message: "User not found!" });
     }
     return res.status(200).json({ success: true, message: "the User is deleted!" });
