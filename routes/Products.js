@@ -32,6 +32,7 @@ const storage = multer.diskStorage({
 });
 const uploadOptions = multer({ storage: storage });
 
+//done
 router.get("/", async (req, res) => {
     const products = await Product.find();
     if (!products) {
@@ -39,7 +40,7 @@ router.get("/", async (req, res) => {
     }
     res.send(products);
 });
-
+//done
 router.get(`/:id`, async (req, res) => {
     const product = await Product.findById(req.params.id);
 
@@ -59,10 +60,18 @@ router.get(`/:id`, async (req, res) => {
 //     res.send(product);
 // });
 
+/**
+ * image and images wasn't checked
+ * done
+ */
 router.post("/", uploadOptions.single("image"), async (req, res) => {
     //check if the category exists
     const category = req.body.category;
     const file = req.file;
+    const admin = await User.findById(req.body.admin);
+    if (!admin) {
+        return res.status(400).send("invalid category");
+    }
     if (!file) {
         return res.status(400).send("No image in the request");
     }
@@ -91,6 +100,7 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
     res.send(product);
 });
 
+//done
 router.put("/:id", uploadOptions.single("image"), async (req, res) => {
     //check the id
     if (!mongoose.isValidObjectId(req.params.id)) {
@@ -136,6 +146,7 @@ router.put("/:id", uploadOptions.single("image"), async (req, res) => {
     res.send(updatedProduct);
 });
 
+//done
 router.delete("/:id", async (req, res) => {
     product = await Product.findByIdAndRemove(req.params.id);
     if (!product) return res.status(404).send("product not found!");
