@@ -17,7 +17,8 @@ router.get("/:id", async (req, res) => {
     }
     res.send(user);
 });
-
+//should check if the name of the user is unique
+//done
 router.put("/:id", async (req, res) => {
     const UserExist = await User.findById(req.params.id);
     let newPassword;
@@ -31,9 +32,11 @@ router.put("/:id", async (req, res) => {
         req.params.id,
         {
             name: req.body.name,
+            receiverName: req.body.name,
             email: req.body.email,
             password: req.body.password,
             phone: req.body.phone,
+            receiverPhone: req.body.phone,
         },
         { new: true }
     );
@@ -42,7 +45,7 @@ router.put("/:id", async (req, res) => {
     }
     res.send(user);
 });
-
+//done
 router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
@@ -55,23 +58,28 @@ router.post("/login", async (req, res) => {
     }
 });
 
+//done
 router.post("/register", async (req, res) => {
     //check if the name is unique over all the names in the DataBase
-    let user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        phone: req.body.phone,
-        receiverName: req.body.name,
-        receiverPhone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-    });
-    user = await user.save();
-
-    if (!user) return res.status(400).send("can't create the User");
-    res.send(user);
+    const findUser = await User.find({ name: req.body.name });
+    if (findUser.length == 0) {
+        let user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            phone: req.body.phone,
+            receiverName: req.body.name,
+            receiverPhone: req.body.phone,
+            isAdmin: req.body.isAdmin,
+        });
+        user = await user.save();
+        if (!user) return res.status(400).send("can't create the User");
+        res.send(user);
+    } else {
+        return res.status(400).send("can't create the User try another name");
+    }
 });
-
+//done
 router.delete("/:id", async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id);
     if (!user) {
