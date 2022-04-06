@@ -50,17 +50,15 @@ router.get(`/:id`, async (req, res) => {
     res.send(product);
 });
 
-// router.get(`/store/:id`, async (req, res) => {
-//     const store = await User.findById(req.params.id);
+router.get(`/store/:personType/:id`, async (req, res) => {
+    const product = await Product.find({ Admin: req.params.id, personType: req.params.personType });
 
-//     if (!store) {
-//         res.status(500).json({ success: false });
-//     }
-//     const products = await Product.findById();
-//     res.send(product);
-// });
-
-/**
+    if (!product) {
+        res.status(500).json({ success: false });
+    }
+    res.send(product);
+});
+/*
  * image and images wasn't checked
  * done
  */
@@ -68,25 +66,18 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
     //check if the category exists
     const category = req.body.category;
     const file = req.file;
-    const admin = await User.findById(req.body.admin);
-    if (!admin) {
-        return res.status(400).send("invalid category");
-    }
-    if (!file) {
-        return res.status(400).send("No image in the request");
-    }
-    const fileName = file.filename; // to get the file name from request
-
-    // the basepath is for making the stores file name full path with the name itsef
-    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+    // const admin = await User.findById(req.body.admin);
+    // if (!admin) {
+    //     return res.status(400).send("invalid category");
+    // }
     let product = new Product({
         name: req.body.name,
         description: req.body.description,
-        image: `${basePath}${fileName}`, // "http://localhost:3000/public/upload/image-2323232" ///////uploaded file url
+        image: req.body.image, // "http://localhost:3000/public/upload/image-2323232" ///////uploaded file url
+        images: req.body.images,
         brand: req.body.brand,
         price: req.body.price,
         category: req.body.category,
-        countInStock: req.body.countInStock,
         isFeatured: req.body.isFeatured,
         size: req.body.size,
         color: req.body.color,

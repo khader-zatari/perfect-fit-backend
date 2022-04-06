@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 //get all the stores
 
 router.get("/", async (req, res) => {
-    const stores = await User.find({ isAdmin: true });
+    const stores = await User.find({ isAdmin: true }); //here without password select
 
     if (!stores) {
         res.status(500).json({ success: false });

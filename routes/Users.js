@@ -65,6 +65,7 @@ router.post("/register", async (req, res) => {
     if (findUser.length == 0) {
         let user = new User({
             name: req.body.name,
+            image: req.body.image, 
             email: req.body.email,
             password: req.body.password,
             phone: req.body.phone,
