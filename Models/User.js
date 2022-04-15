@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     zip: { type: String, default: "" },
     city: { type: String, default: "" },
     image: { type: String, default: "" },
+    BannerImages: [{ type: String, default: "" }],
     isAdmin: { type: Boolean, required: true, default: false },
 });
 
