@@ -48,11 +48,11 @@ router.put("/:id", async (req, res) => {
 //done
 router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) {
+    if (!user || user == null) {
         res.status(400).send("the User is not found");
     }
     if (req.body.password == user.password) {
-        res.status(200).send({ user: user.email });
+        res.status(200).send(user);
     } else {
         res.status(400).send("password is wrong!");
     }
@@ -61,11 +61,11 @@ router.post("/login", async (req, res) => {
 //done
 router.post("/register", async (req, res) => {
     //check if the name is unique over all the names in the DataBase
-    const findUser = await User.find({ name: req.body.name });
+    const findUser = await User.find({ email: req.body.email });
     if (findUser.length == 0) {
         let user = new User({
             name: req.body.name,
-            image: req.body.image, 
+            image: req.body.image,
             email: req.body.email,
             password: req.body.password,
             phone: req.body.phone,
@@ -79,6 +79,21 @@ router.post("/register", async (req, res) => {
     } else {
         return res.status(400).send("can't create the User try another name");
     }
+});
+router.put("/shippingAddress/:id", async (req, res) => {
+    console.log(req.body);
+    //check if the name is unique over all the names in the DataBase
+    const changeAddress = await User.findByIdAndUpdate(req.params.id, {
+        phone: req.body.phone,
+        receiverName: req.body.name,
+        address: req.body.address,
+        zip: req.body.zip,
+        city: req.body.city,
+    });
+    if (!changeAddress) {
+        res.status(400).send("the User address cannot be updated!");
+    }
+    res.send(changeAddress);
 });
 //done
 router.delete("/:id", async (req, res) => {
