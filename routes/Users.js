@@ -31,12 +31,8 @@ router.put("/:id", async (req, res) => {
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
-            name: req.body.name,
-            receiverName: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone,
-            receiverPhone: req.body.phone,
+            personImage: req.body.personImage,
+            vtoImage: req.body.vtoImage,
         },
         { new: true }
     );
@@ -80,6 +76,7 @@ router.post("/register", async (req, res) => {
         return res.status(400).send("can't create the User try another name");
     }
 });
+
 router.put("/shippingAddress/:id", async (req, res) => {
     console.log(req.body);
     //check if the name is unique over all the names in the DataBase

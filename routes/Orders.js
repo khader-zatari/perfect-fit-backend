@@ -5,28 +5,27 @@ const express = require("express");
 const router = express.Router();
 
 router.get(`/`, async (req, res) => {
-    const orderList = await Order.find().populate("user", "name").sort({ dateOrdered: -1 });
+    const orderList = await Order.find().populate("user", "name").populate("shop", "name").sort({ dateOrdered: -1 });
     if (!orderList) {
         res.status(500).json({ success: false });
     }
     res.send(orderList);
 });
 router.get(`/:id`, async (req, res) => {
-    const order = await Order.findById(req.params.id)
-        .populate("user", "name")
-        .populate({
-            //object
-            path: "OrderItems",
-            populate: {
-                path: "Product",
-                populate: "category",
-            },
-        });
+    const order = await Order.findById(req.params.id).populate("shop", "name");
 
     if (!order) {
         res.status(500).json({ success: false });
     }
     res.send(order);
+});
+router.get(`/orderItem/:id`, async (req, res) => {
+    const orderItem = await OrderItem.findById(req.params.id).populate("product");
+
+    if (!orderItem) {
+        res.status(500).json({ success: false });
+    }
+    res.send(orderItem);
 });
 router.post("/", async (req, res) => {
     const orderItemsIds = Promise.all(
@@ -66,7 +65,6 @@ router.post("/", async (req, res) => {
         user: req.body.user,
         shop: req.body.shop,
     });
-    console.log(order);
     order = await order.save();
 
     if (!order) return res.status(400).send("the order cannot be created!");

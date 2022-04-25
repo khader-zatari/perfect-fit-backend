@@ -58,6 +58,14 @@ router.get(`/store/:personType/:id`, async (req, res) => {
     }
     res.send(product);
 });
+router.get(`/store/:id`, async (req, res) => {
+    const product = await Product.find({ Admin: req.params.id });
+
+    if (!product) {
+        res.status(500).json({ success: false });
+    }
+    res.send(product);
+});
 /*
  * image and images wasn't checked
  * done
@@ -70,10 +78,11 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
     // if (!admin) {
     //     return res.status(400).send("invalid category");
     // }
+
     let product = new Product({
         name: req.body.name,
         description: req.body.description,
-        image: req.body.image, // "http://localhost:3000/public/upload/image-2323232" ///////uploaded file url
+        image: req.body.image,
         images: req.body.images,
         brand: req.body.brand,
         price: req.body.price,
@@ -81,9 +90,10 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
         isFeatured: req.body.isFeatured,
         size: req.body.size,
         color: req.body.color,
-        personType: req.body.personType,
+        personType: req.body.personType[0],
         Admin: req.body.admin,
     });
+    console.log(req.body);
     product = await product.save();
     if (!product) {
         return res.status(500).send("The product cannot be created");
