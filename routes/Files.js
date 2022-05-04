@@ -10,3 +10,5 @@ router.get("/vto/:personImage/:clothImage", (req, res) => {
         console.log("the file ran successfuly");
     });
 });
+
+module.exports = router;
