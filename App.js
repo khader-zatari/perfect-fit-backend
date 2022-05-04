@@ -25,12 +25,14 @@ const productsRoutes = require("./routes/Products");
 const storeRoutes = require("./routes/Stores");
 const ordersRoutes = require("./routes/Orders");
 const categoriesRoutes = require("./routes/categories");
+const files = require("./routes/Files");
 
 app.use(`${api}/users`, usersRoutes); // when i want the begining of that path just rout me to the user router.
 app.use(`${api}/products`, productsRoutes);
 app.use(`${api}/orders`, ordersRoutes);
 app.use(`${api}/stores`, storeRoutes);
 app.use(`${api}/categories`, categoriesRoutes);
+app.use(`${api}/files`, files);
 
 //connect to the database
 mongoose
