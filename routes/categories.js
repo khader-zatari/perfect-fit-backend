@@ -1,4 +1,4 @@
-const { Category } = require("../models/category");
+const { Category } = require("../Models/category");
 const express = require("express");
 const router = express.Router();
 
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 
     res.send(category);
 });
-//update a category by id 
+//update a category by id
 router.put("/:id", async (req, res) => {
     const category = await Category.findByIdAndUpdate(
         req.params.id,
@@ -50,7 +50,7 @@ router.put("/:id", async (req, res) => {
 
     res.send(category);
 });
-//delete a category by id 
+//delete a category by id
 router.delete("/:id", async (req, res) => {
     category = await Category.findByIdAndRemove(req.params.id);
 
